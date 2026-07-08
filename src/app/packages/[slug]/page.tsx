@@ -40,6 +40,7 @@ export default async function PackagePage({ params }: { params: Promise<{ slug: 
 
   const packageAccommodations = pkg.accommodationIds.map((id) => accommodationById.get(id)).filter(Boolean) as Accommodation[];
   const total = calculatePackageTotal(pkg);
+  const displayName = pkg.packageNumber ? `${pkg.packageNumber}. ${pkg.name}` : pkg.name;
 
   return (
     <main>
@@ -49,7 +50,7 @@ export default async function PackagePage({ params }: { params: Promise<{ slug: 
           <div className="section-heading compact">
             <div>
               <p className="eyebrow">Package detail</p>
-              <h1>{pkg.name}</h1>
+              <h1>{displayName}</h1>
               <p className="muted">{pkg.fullDates}</p>
             </div>
             <div className="card-topline">

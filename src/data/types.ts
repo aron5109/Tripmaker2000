@@ -14,6 +14,7 @@ export type AccommodationGuests = string | {
 };
 
 export type NearbyPlaces = {
+  highlights?: string[];
   restaurants?: string[];
   beaches?: string[];
   airports?: string[];
@@ -75,6 +76,7 @@ export type Transfer = {
 export type TripPackage = {
   id: string;
   slug?: string;
+  packageNumber?: number;
   name: string;
   label: string;
   secondaryLabel?: string;

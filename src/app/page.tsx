@@ -56,6 +56,7 @@ function getPublicImageSrc(images?: string[]) {
 
 function PackageCard({ pkg }: { pkg: TripPackage }) {
   const total = calculatePackageTotal(pkg);
+  const displayName = pkg.packageNumber ? `${pkg.packageNumber}. ${pkg.name}` : pkg.name;
   return (
     <article className="card package-card">
       <div className="card-topline">
@@ -63,7 +64,7 @@ function PackageCard({ pkg }: { pkg: TripPackage }) {
         {pkg.secondaryLabel && <Badge>{pkg.secondaryLabel}</Badge>}
         {pkg.ferryNeeded ? <Badge tone="warn">Ferry Needed</Badge> : <Badge>No Ferry</Badge>}
       </div>
-      <h3>{pkg.name}</h3>
+      <h3>{displayName}</h3>
       <p className="muted">{pkg.fullDates}</p>
       <Price isk={total} />
       <dl className="quick-facts">
@@ -94,6 +95,7 @@ function AccommodationMini({ accommodation }: { accommodation: Accommodation }) 
 }
 
 function PackageDetail({ pkg }: { pkg: TripPackage }) {
+  const displayName = pkg.packageNumber ? `${pkg.packageNumber}. ${pkg.name}` : pkg.name;
   const packageAccommodations = pkg.accommodationIds.map((id) => byId.get(id)).filter(Boolean) as Accommodation[];
   const packageTransfers = (pkg.knownTransferIds ?? []).flatMap((id) => {
     const transfer = transferById.get(id);
@@ -105,7 +107,7 @@ function PackageDetail({ pkg }: { pkg: TripPackage }) {
       <div className="section-heading compact">
         <div>
           <p className="eyebrow">Package detail</p>
-          <h3>{pkg.name}</h3>
+          <h3>{displayName}</h3>
         </div>
         <div className="card-topline"><Badge>{pkg.label}</Badge>{pkg.secondaryLabel && <Badge>{pkg.secondaryLabel}</Badge>}{pkg.ferryNeeded ? <Badge tone="warn">Transfer TBD</Badge> : <Badge>No Ferry</Badge>}</div>
       </div>
@@ -142,7 +144,7 @@ export default function Home() {
 
       <section className="container">
         <div className="section-heading"><div><p className="eyebrow">Side-by-side</p><h2>Comparison table</h2></div></div>
-        <div className="table-wrap"><table><thead><tr><th>Package</th><th>Total ISK</th><th>Approx. EUR</th><th>Ferry needed</th><th>All-inclusive?</th><th>Best for</th><th>Notes</th></tr></thead><tbody>{tripPackages.map((pkg) => { const total = calculatePackageTotal(pkg); return <tr key={pkg.id}><td><Link href={packageHref(pkg)}>{pkg.name}</Link>{pkg.badges && <div className="chips table-chips">{pkg.badges.map((badge) => <span key={badge}>{badge}</span>)}</div>}</td><td>{formatISK(total)}</td><td>{formatEUR(convertISKToEUR(total))}</td><td>{pkg.ferryNeeded ? "Yes" : "No"}</td><td>{pkg.boardSummary.some((item) => item.toLowerCase().includes("all inclusive")) ? "Second week" : "No"}</td><td>{pkg.bestFor ?? ""}</td><td>{pkg.importantNotes.join(" ")} {(pkg.missingCosts ?? []).join(" ")}</td></tr>; })}</tbody></table></div>
+        <div className="table-wrap"><table><thead><tr><th>Package</th><th>Total ISK</th><th>Approx. EUR</th><th>Ferry needed</th><th>All-inclusive?</th><th>Best for</th><th>Notes</th></tr></thead><tbody>{tripPackages.map((pkg) => { const total = calculatePackageTotal(pkg); const displayName = pkg.packageNumber ? `${pkg.packageNumber}. ${pkg.name}` : pkg.name; return <tr key={pkg.id}><td><Link href={packageHref(pkg)}>{displayName}</Link>{pkg.badges && <div className="chips table-chips">{pkg.badges.map((badge) => <span key={badge}>{badge}</span>)}</div>}</td><td>{formatISK(total)}</td><td>{formatEUR(convertISKToEUR(total))}</td><td>{pkg.ferryNeeded ? "Yes" : "No"}</td><td>{pkg.boardSummary.some((item) => item.toLowerCase().includes("all inclusive")) ? "Second week" : "No"}</td><td>{pkg.bestFor ?? ""}</td><td>{pkg.importantNotes.join(" ")} {(pkg.missingCosts ?? []).join(" ")}</td></tr>; })}</tbody></table></div>
       </section>
 
       <section className="container details">{tripPackages.map((pkg) => <PackageDetail key={pkg.id} pkg={pkg} />)}</section>
