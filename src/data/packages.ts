@@ -3,6 +3,7 @@ import type { TripPackage } from "./types";
 export const tripPackages: TripPackage[] = [
   {
     id: "smart-value-tenerife",
+    slug: "smart-value-tenerife",
     name: "Smart Value Tenerife Package",
     label: "Best Value",
     fullDates: "17 August 2026 – 7 September 2026",
@@ -15,7 +16,24 @@ export const tripPackages: TripPackage[] = [
     importantNotes: ["Food is not all-inclusive, so meals must be budgeted separately."],
   },
   {
+    id: "tenerife-santa-cruz-hotel-stay",
+    slug: "tenerife-santa-cruz-hotel-stay",
+    name: "Tenerife + Santa Cruz Hotel Stay",
+    label: "Tenerife Only",
+    secondaryLabel: "Hotel Stay",
+    badges: ["Tenerife Only", "No Ferry", "Breakfast Included", "Free Cancellation", "No Prepayment"],
+    fullDates: "17 August 2026 – 7 September 2026",
+    accommodationIds: ["hovima-atlantis", "barcelo-santa-cruz-contemporaneo"],
+    islands: ["Tenerife only"],
+    ferryNeeded: false,
+    boardSummary: ["Breakfast available / hotel stay for first part", "Breakfast included at Barceló Santa Cruz Contemporáneo"],
+    bestFor: "Families who want a Tenerife-only trip with a Santa Cruz hotel week that includes breakfast and flexible booking terms.",
+    sellingPoints: ["Tenerife-only itinerary", "No inter-island ferry", "HOVIMA Atlantis first, Santa Cruz hotel second", "Breakfast included for the Barceló week", "Free cancellation before 30 August 2026", "No prepayment needed; pay at the property", "Free stay for child"],
+    importantNotes: ["Accommodation total is approx. ISK 408,754: HOVIMA Atlantis ISK 229,969 + Barceló Santa Cruz Contemporáneo approx. ISK 178,785.", "Breakfast is included for the Barceló Santa Cruz Contemporáneo week.", "Free cancellation before 30 August 2026.", "No prepayment needed.", "Pay at the property.", "Free stay for child.", "This is still Tenerife-only.", "No ferry needed.", "Not all-inclusive."],
+  },
+  {
     id: "fuerteventura-all-inclusive",
+    slug: "fuerteventura-all-inclusive",
     name: "Fuerteventura All-Inclusive Package",
     label: "All Inclusive",
     fullDates: "17 August 2026 – 7 September 2026",
@@ -31,6 +49,7 @@ export const tripPackages: TripPackage[] = [
   },
   {
     id: "family-resort-upgrade",
+    slug: "family-resort-upgrade",
     name: "Family Resort Upgrade Package",
     label: "Family Resort",
     fullDates: "17 August 2026 – 7 September 2026",
@@ -45,6 +64,7 @@ export const tripPackages: TripPackage[] = [
   },
   {
     id: "tenerife-full-stay-apartment-resort",
+    slug: "tenerife-full-stay-apartment-resort",
     name: "Tenerife Full-Stay Apartment Resort",
     label: "Tenerife Only",
     secondaryLabel: "Full 3 Weeks",

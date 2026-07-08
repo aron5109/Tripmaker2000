@@ -3,6 +3,7 @@ export type RatingMap = Record<string, number>;
 export type Accommodation = {
   id: string;
   name: string;
+  slug: string;
   island: "Tenerife" | "Fuerteventura";
   area: string;
   address?: string;
@@ -26,7 +27,7 @@ export type Accommodation = {
   reviewCount?: number;
   familyRating?: string;
   notes?: string[];
-  bookingLink: string;
+  bookingUrl: string;
   images: string[];
 };
 
@@ -42,6 +43,7 @@ export type Transfer = {
 export type TripPackage = {
   id: string;
   name: string;
+  slug: string;
   label: "Best Value" | "All Inclusive" | "Family Resort" | "Tenerife Only";
   secondaryLabel?: string;
   badges?: string[];
