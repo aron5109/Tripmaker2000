@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { accommodations } from "@/data/accommodations";
 import { tripPackages } from "@/data/packages";
 import { pricingSettings, tripSettings } from "@/data/settings";
@@ -24,12 +25,36 @@ function Price({ isk, sourcePriceEur, sourceCurrencyNote }: { isk: number; sourc
 }
 
 
-function BookingButton({ bookingLink, small = false }: { bookingLink?: string; small?: boolean }) {
-  if (!bookingLink) {
+function BookingButton({ bookingUrl, small = false }: { bookingUrl?: string; small?: boolean }) {
+  if (!bookingUrl) {
     return <span className={`button button-secondary${small ? " button-small" : ""}`} aria-disabled="true">Booking link coming soon</span>;
   }
 
-  return <a className={`button${small ? " button-small" : ""}`} href={bookingLink} target="_blank" rel="noreferrer">View / Book</a>;
+  return <a className={`button${small ? " button-small" : ""}`} href={bookingUrl} target="_blank" rel="noopener noreferrer">View / Book</a>;
+}
+
+function packageHref(pkg: TripPackage) {
+  return `/packages/${pkg.slug ?? pkg.id}`;
+}
+
+function dateDisplay(accommodation: Accommodation) {
+  return typeof accommodation.dates === "string" ? accommodation.dates : accommodation.dates.display;
+}
+
+function shortDateDisplay(accommodation: Accommodation) {
+  return accommodation.shortDates ?? dateDisplay(accommodation);
+}
+
+function nightsDisplay(accommodation: Accommodation) {
+  return accommodation.nights ?? (typeof accommodation.dates === "string" ? undefined : accommodation.dates.nights);
+}
+
+function accommodationImageSrc(accommodation: Accommodation) {
+  return accommodation.images?.[0] ?? "/images/placeholder-trip.svg";
+}
+
+function accommodationBookingUrl(accommodation: Accommodation) {
+  return accommodation.bookingUrl ?? accommodation.bookingLink;
 }
 
 function PackageCard({ pkg }: { pkg: TripPackage }) {
@@ -49,9 +74,9 @@ function PackageCard({ pkg }: { pkg: TripPackage }) {
         <div><dt>Ferry needed</dt><dd>{pkg.ferryNeeded ? "Yes" : "No"}</dd></div>
         <div><dt>Board</dt><dd>{pkg.boardSummary.join("; ")}</dd></div>
       </dl>
-      <p>{pkg.bestFor}</p>
+      {pkg.bestFor && <p>{pkg.bestFor}</p>}
       {pkg.badges && <div className="chips">{pkg.badges.map((badge) => <span key={badge}>{badge}</span>)}</div>}
-      <a className="button" href={`#${pkg.id}`}>View package</a>
+      <Link className="button" href={packageHref(pkg)}>View package</Link>
     </article>
   );
 }
@@ -59,13 +84,13 @@ function PackageCard({ pkg }: { pkg: TripPackage }) {
 function AccommodationMini({ accommodation }: { accommodation: Accommodation }) {
   return (
     <article className="stay-card">
-      <Image className="stay-image" src="/images/placeholder-trip.svg" alt="Travel placeholder" width={640} height={360} />
+      <Image className="stay-image" src={accommodationImageSrc(accommodation)} alt={accommodation.name} width={640} height={360} />
       <div>
-        <p className="eyebrow">{accommodation.shortDates} · {accommodation.nights} nights</p>
+        <p className="eyebrow">{shortDateDisplay(accommodation)}{nightsDisplay(accommodation) ? ` · ${nightsDisplay(accommodation)} nights` : ""}</p>
         <h4>{accommodation.name}</h4>
         <p className="muted">{accommodation.area}, {accommodation.island}</p>
         <Price isk={accommodation.priceIsk} sourcePriceEur={accommodation.sourcePriceEur} sourceCurrencyNote={accommodation.sourceCurrencyNote} />
-        <BookingButton bookingLink={accommodation.bookingLink} small />
+        <BookingButton bookingUrl={accommodationBookingUrl(accommodation)} small />
       </div>
     </article>
   );
@@ -120,14 +145,14 @@ export default function Home() {
 
       <section className="container">
         <div className="section-heading"><div><p className="eyebrow">Side-by-side</p><h2>Comparison table</h2></div></div>
-        <div className="table-wrap"><table><thead><tr><th>Package</th><th>Total ISK</th><th>Approx. EUR</th><th>Ferry needed</th><th>All-inclusive?</th><th>Best for</th><th>Notes</th></tr></thead><tbody>{tripPackages.map((pkg) => { const total = calculatePackageTotal(pkg); return <tr key={pkg.id}><td>{pkg.name}{pkg.badges && <div className="chips table-chips">{pkg.badges.map((badge) => <span key={badge}>{badge}</span>)}</div>}</td><td>{formatISK(total)}</td><td>{formatEUR(convertISKToEUR(total))}</td><td>{pkg.ferryNeeded ? "Yes" : "No"}</td><td>{pkg.boardSummary.some((item) => item.toLowerCase().includes("all inclusive")) ? "Second week" : "No"}</td><td>{pkg.bestFor}</td><td>{pkg.importantNotes.join(" ")} {(pkg.missingCosts ?? []).join(" ")}</td></tr>; })}</tbody></table></div>
+        <div className="table-wrap"><table><thead><tr><th>Package</th><th>Total ISK</th><th>Approx. EUR</th><th>Ferry needed</th><th>All-inclusive?</th><th>Best for</th><th>Notes</th></tr></thead><tbody>{tripPackages.map((pkg) => { const total = calculatePackageTotal(pkg); return <tr key={pkg.id}><td><Link href={packageHref(pkg)}>{pkg.name}</Link>{pkg.badges && <div className="chips table-chips">{pkg.badges.map((badge) => <span key={badge}>{badge}</span>)}</div>}</td><td>{formatISK(total)}</td><td>{formatEUR(convertISKToEUR(total))}</td><td>{pkg.ferryNeeded ? "Yes" : "No"}</td><td>{pkg.boardSummary.some((item) => item.toLowerCase().includes("all inclusive")) ? "Second week" : "No"}</td><td>{pkg.bestFor ?? ""}</td><td>{pkg.importantNotes.join(" ")} {(pkg.missingCosts ?? []).join(" ")}</td></tr>; })}</tbody></table></div>
       </section>
 
       <section className="container details">{tripPackages.map((pkg) => <PackageDetail key={pkg.id} pkg={pkg} />)}</section>
 
       <section className="container">
         <div className="section-heading"><div><p className="eyebrow">Reusable stays</p><h2>Accommodation library</h2></div></div>
-        <div className="accommodation-grid">{accommodations.map((stay) => <article className="card accommodation-card" key={stay.id}><Image className="library-image" src="/images/placeholder-trip.svg" alt="Travel placeholder" width={640} height={360} /><div className="card-body"><p className="eyebrow">{stay.type}</p><h3>{stay.name}</h3><p className="muted">{stay.area}, {stay.island} · {stay.dates}</p><Price isk={stay.priceIsk} sourcePriceEur={stay.sourcePriceEur} sourceCurrencyNote={stay.sourceCurrencyNote} />{stay.sourcePriceEur && <p className="muted">Source price: €{new Intl.NumberFormat("en-US").format(stay.sourcePriceEur)}; ISK price is estimated at {pricingSettings.eurToIskRate} ISK/EUR.</p>}{stay.previousPriceIsk && <p className="muted">Previous price: {formatISK(stay.previousPriceIsk)}{stay.previousSourcePriceEur ? ` / source €${new Intl.NumberFormat("en-US").format(stay.previousSourcePriceEur)}` : ""}</p>}<p><strong>Board:</strong> {stay.board}</p><div className="chips">{stay.facilities.slice(0, 6).map((facility) => <span key={facility}>{facility}</span>)}</div>{stay.notes && <p className="warning small">{stay.notes.join(" ")}</p>}<BookingButton bookingLink={stay.bookingLink} /></div></article>)}</div>
+        <div className="accommodation-grid">{accommodations.map((stay) => <article className="card accommodation-card" key={stay.id}><Image className="library-image" src={accommodationImageSrc(stay)} alt={stay.name} width={640} height={360} /><div className="card-body"><p className="eyebrow">{stay.type}</p><h3>{stay.name}</h3><p className="muted">{stay.area}, {stay.island} · {dateDisplay(stay)}</p><Price isk={stay.priceIsk} sourcePriceEur={stay.sourcePriceEur} sourceCurrencyNote={stay.sourceCurrencyNote} />{stay.sourcePriceEur && <p className="muted">Source price: €{new Intl.NumberFormat("en-US").format(stay.sourcePriceEur)}; ISK price is estimated at {pricingSettings.eurToIskRate} ISK/EUR.</p>}{stay.previousPriceIsk && <p className="muted">Previous price: {formatISK(stay.previousPriceIsk)}{stay.previousSourcePriceEur ? ` / source €${new Intl.NumberFormat("en-US").format(stay.previousSourcePriceEur)}` : ""}</p>}<p><strong>Board:</strong> {stay.board}</p><div className="chips">{stay.facilities.slice(0, 6).map((facility) => <span key={facility}>{facility}</span>)}</div>{stay.bookingTerms && <ul className="small">{stay.bookingTerms.map((term) => <li key={term}>{term}</li>)}</ul>}{stay.notes && !stay.bookingTerms && <p className="warning small">{stay.notes.join(" ")}</p>}<BookingButton bookingUrl={accommodationBookingUrl(stay)} /></div></article>)}</div>
       </section>
     </main>
   );

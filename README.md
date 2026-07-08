@@ -39,7 +39,7 @@ Change `eurToIskRate` when you want to refresh EUR estimates. EUR display is app
 
 ## Add images
 
-The site currently uses `/public/images/placeholder-trip.svg` so the build does not fail while JPGs are missing.
+The site uses browser/public image paths such as `/images/placeholder-trip.svg` and falls back to that placeholder so the build does not fail while JPGs are missing. Do not use `/public/images/...` in React or Next image `src` values.
 
 Future accommodation image paths are already stored in `src/data/accommodations.ts`. Add real JPG files here when available:
 
@@ -55,8 +55,10 @@ Future accommodation image paths are already stored in `src/data/accommodations.
 - `public/images/accommodations/ona-hollywood-mirage-02.jpg`
 - `public/images/accommodations/livvo-coloradamar-01.jpg`
 - `public/images/accommodations/livvo-coloradamar-02.jpg`
+- `public/images/accommodations/barcelo-santa-cruz-contemporaneo-01.jpg`
+- `public/images/accommodations/barcelo-santa-cruz-contemporaneo-02.jpg`
 
-To switch from placeholders to real images, update the `Image` component usage in `src/app/page.tsx` to use the first path from each accommodation's `images` array after the files exist.
+The UI reads the first browser path from each accommodation's `images` array and falls back to `/images/placeholder-trip.svg` when an array is empty. Package and booking buttons must never point to image files.
 
 ## Add a new trip package
 
