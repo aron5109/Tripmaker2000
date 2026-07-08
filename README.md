@@ -18,6 +18,8 @@ Accommodation prices live in `src/data/accommodations.ts`.
 2. Update `priceIsk` and, if useful, `previousPriceIsk`.
 3. Keep ISK as the source-of-truth currency.
 
+If a booking price is originally listed in EUR, store the manually calculated ISK estimate in `priceIsk` so package totals and comparisons still work in ISK. Also add `sourcePriceEur`, `previousSourcePriceEur` if relevant, and a short `sourceCurrencyNote` explaining the exchange-rate calculation, for example `€3,155 × 145 ISK/EUR = ISK 457,475`. This keeps the final comparison visible in ISK while making it clear when the ISK amount is an estimate from a EUR source price.
+
 Package totals are calculated from accommodation IDs, so package cards and the comparison table update automatically.
 
 ## Update the EUR exchange rate
@@ -47,6 +49,8 @@ Future accommodation image paths are already stored in `src/data/accommodations.
 - `public/images/accommodations/hotel-arena-beach-02.jpg`
 - `public/images/accommodations/occidental-jandia-mar-01.jpg`
 - `public/images/accommodations/occidental-jandia-mar-02.jpg`
+- `public/images/accommodations/ona-hollywood-mirage-01.jpg`
+- `public/images/accommodations/ona-hollywood-mirage-02.jpg`
 
 To switch from placeholders to real images, update the `Image` component usage in `src/app/page.tsx` to use the first path from each accommodation's `images` array after the files exist.
 
