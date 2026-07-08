@@ -43,6 +43,23 @@ export const tripPackages: TripPackage[] = [
     importantNotes: ["Ferry estimate is included as a known extra, but local transfer costs are still TBD."],
     knownTransferIds: ["tenerife-morro-jable-ferry"],
   },
+
+  {
+    id: "tenerife-lanzarote-sea-view-apartment",
+    name: "Tenerife + Lanzarote Sea View Apartment",
+    label: "Sea View Apartment",
+    secondaryLabel: "Lanzarote Add-On",
+    badges: ["Lanzarote", "Sea View", "Apartment", "Self-Catering", "Transfer TBD", "Breakfast Available", "Free Parking"],
+    fullDates: "17 August 2026 – 7 September 2026",
+    accommodationIds: ["hovima-atlantis", "livvo-coloradamar"],
+    islands: ["Tenerife", "Lanzarote"],
+    ferryNeeded: true,
+    boardSummary: ["Breakfast available / hotel stay for first part", "Self-catering apartment for second part", "Buffet breakfast available at Coloradamar"],
+    bestFor: "Families who want a Tenerife beach base first, then a quieter Lanzarote sea-view apartment with pool, terrace, kitchen, and free parking.",
+    sellingPoints: ["Tenerife beach base first", "Lanzarote sea-view apartment second", "Lower accommodation total than the Fuerteventura all-inclusive packages", "Good for families who want a quieter apartment-style second week", "Pool, terrace, kitchen, and free parking"],
+    importantNotes: ["This is not all-inclusive.", "Meals are not included unless breakfast is added.", "Inter-island travel between Tenerife and Lanzarote is not priced yet.", "Transfer/flight/ferry costs are TBD.", "Additional charges may apply.", "Coloradamar source price is €1,056, converted to ISK using the configured exchange rate."],
+    missingCosts: ["Tenerife → Lanzarote inter-island flight or ferry TBD", "Local transfer costs TBD"],
+  },
   {
     id: "tenerife-full-stay-apartment-resort",
     name: "Tenerife Full-Stay Apartment Resort",
