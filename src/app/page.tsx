@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import TripPicker from "@/components/TripPicker";
 import { accommodations } from "@/data/accommodations";
 import { tripPackages } from "@/data/packages";
 import { pricingSettings, tripSettings } from "@/data/settings";
@@ -129,14 +130,17 @@ export default function Home() {
         <div className="hero-content">
           <p className="eyebrow">Family trip planner · Canary Islands</p>
           <h1>Canary Islands Family Trip Packages</h1>
-          <p className="subtitle">Compare Tenerife and Fuerteventura package ideas for {tripSettings.fullTravelPeriod}.</p>
+          <p className="subtitle">Pick how to split the 21 nights ({tripSettings.fullTravelPeriod}), choose your stays, and the dates lock in automatically.</p>
+          <a className="button" href="#picker">Start picking</a>
           <div className="hero-badges"><Badge>{tripSettings.guests}</Badge><Badge>{tripSettings.rooms}</Badge><Badge>Rate: €1 = ISK {pricingSettings.eurToIskRate}</Badge></div>
         </div>
       </section>
 
+      <TripPicker />
+
       <section className="container">
         <div className="note">{pricingSettings.currencyNote} Prices are planning estimates and are not final booking confirmations.</div>
-        <div className="section-heading"><div><p className="eyebrow">Choose a route</p><h2>Package overview</h2></div></div>
+        <div className="section-heading"><div><p className="eyebrow">Prefer a shortcut?</p><h2>Ready-made packages</h2></div></div>
         <div className="package-grid">{tripPackages.map((pkg) => <PackageCard key={pkg.id} pkg={pkg} />)}</div>
       </section>
 

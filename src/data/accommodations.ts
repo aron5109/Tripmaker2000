@@ -548,4 +548,85 @@ export const accommodations: Accommodation[] = [
     ],
   },
 
+  // ---------------------------------------------------------------------------
+  // PLACEHOLDERS for the 7 + 14 nights split (boundary: 24 August 2026).
+  // These make the 7+14 option appear in the picker, but priceIsk is 0 until
+  // you get real quotes. To activate one:
+  //   1. Open the bookingLink (dates and guests are already pre-filled).
+  //   2. Copy the ISK price into priceIsk (or EUR into sourcePriceEur and
+  //      calculate priceIsk at the configured exchange rate).
+  //   3. Remove the "PLACEHOLDER" note.
+  // Delete any entry you don't want to offer.
+  // ---------------------------------------------------------------------------
+  {
+    id: "hovima-atlantis-7n",
+    name: "HOVIMA Atlantis (first week only)",
+    island: "Tenerife",
+    area: "Adeje",
+    address: "Avenida Colón, 3, 38660 Adeje, Spain",
+    dates: "17 August 2026 – 24 August 2026",
+    shortDates: "17 Aug – 24 Aug",
+    nights: 7,
+    guests: "2 adults + 1 child age 12",
+    priceIsk: 0,
+    type: "Hotel / apartment-style hotel",
+    board: "Breakfast available",
+    facilities: ["Outdoor swimming pool", "Beachfront", "Free WiFi", "Family rooms", "Bar", "Breakfast"],
+    availabilityNote: "PLACEHOLDER — price not quoted yet for 17–24 Aug. Open the booking link to get the real price.",
+    bookingLink: "https://www.booking.com/hotel/es/hovima-atlantis.en-gb.html?checkin=2026-08-17&checkout=2026-08-24&group_adults=2&no_rooms=1&group_children=1&age=12",
+    images: ["/images/accommodations/hovima-atlantis-01.jpg", "/images/accommodations/hovima-atlantis-02.jpg"],
+  },
+  {
+    id: "home2book-bereber-14n",
+    name: "Home2Book Bereber Apt Santa Cruz (two weeks)",
+    island: "Tenerife",
+    area: "Santa Cruz de Tenerife",
+    address: "38005 Santa Cruz de Tenerife, Spain",
+    dates: "24 August 2026 – 7 September 2026",
+    shortDates: "24 Aug – 7 Sep",
+    nights: 14,
+    guests: "2 adults + 1 child age 12",
+    priceIsk: 0,
+    type: "Entire apartment",
+    board: "Self-catering",
+    facilities: ["Entire apartment", "83 m²", "Private kitchen", "Air conditioning", "Terrace", "Free WiFi"],
+    availabilityNote: "PLACEHOLDER — price not quoted yet for 24 Aug – 7 Sep. Open the booking link to get the real price.",
+    bookingLink: "https://www.booking.com/hotel/es/home2book-bereber-apt-santa-cruz-center-terrace.en-gb.html?checkin=2026-08-24&checkout=2026-09-07&group_adults=2&no_rooms=1&group_children=1&age=12",
+    images: ["/images/accommodations/home2book-bereber-santa-cruz-01.jpg", "/images/accommodations/home2book-bereber-santa-cruz-02.jpg"],
+  },
+  {
+    id: "barcelo-santa-cruz-contemporaneo-14n",
+    name: "Barceló Santa Cruz Contemporáneo (two weeks)",
+    island: "Tenerife",
+    area: "Santa Cruz de Tenerife",
+    dates: "24 August 2026 – 7 September 2026",
+    shortDates: "24 Aug – 7 Sep",
+    nights: 14,
+    guests: "2 adults + 1 child age 12",
+    priceIsk: 0,
+    type: "Hotel",
+    board: "Breakfast included",
+    facilities: ["Hotel comfort", "Central Santa Cruz", "Breakfast included", "Free WiFi"],
+    availabilityNote: "PLACEHOLDER — price not quoted yet for 24 Aug – 7 Sep. Open the booking link to get the real price.",
+    bookingLink: "https://www.booking.com/hotel/es/contemporaneo-s-l.en-gb.html?checkin=2026-08-24&checkout=2026-09-07&group_adults=2&no_rooms=1&group_children=1&age=12",
+    images: ["/images/accommodations/barcelo-santa-cruz-contemporaneo-01.jpg", "/images/accommodations/barcelo-santa-cruz-contemporaneo-02.jpg"],
+  },
+  {
+    id: "occidental-jandia-mar-14n",
+    name: "Occidental Jandía Mar (two weeks, all inclusive)",
+    island: "Fuerteventura",
+    area: "Morro Jable / Jandía",
+    dates: "24 August 2026 – 7 September 2026",
+    shortDates: "24 Aug – 7 Sep",
+    nights: 14,
+    guests: "2 adults + 1 child age 12",
+    priceIsk: 0,
+    type: "Hotel / resort",
+    board: "All inclusive",
+    facilities: ["All inclusive", "Family resort feel", "Pool/waterpark", "Morro Jable area"],
+    notes: ["Ferry or inter-island travel needed from Tenerife"],
+    availabilityNote: "PLACEHOLDER — price not quoted yet for 24 Aug – 7 Sep. Open the booking link to get the real price.",
+    bookingLink: "https://www.booking.com/hotel/es/occidental-jandia-mar.en-gb.html?checkin=2026-08-24&checkout=2026-09-07&group_adults=2&no_rooms=1&group_children=1&age=12",
+    images: ["/images/accommodations/occidental-jandia-mar-01.jpg", "/images/accommodations/occidental-jandia-mar-02.jpg"],
+  },
 ];
