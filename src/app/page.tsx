@@ -23,6 +23,15 @@ function Price({ isk, sourcePriceEur, sourceCurrencyNote }: { isk: number; sourc
   );
 }
 
+
+function BookingButton({ bookingLink, small = false }: { bookingLink?: string; small?: boolean }) {
+  if (!bookingLink) {
+    return <span className={`button button-secondary${small ? " button-small" : ""}`} aria-disabled="true">Booking link coming soon</span>;
+  }
+
+  return <a className={`button${small ? " button-small" : ""}`} href={bookingLink} target="_blank" rel="noreferrer">View / Book</a>;
+}
+
 function PackageCard({ pkg }: { pkg: TripPackage }) {
   const total = calculatePackageTotal(pkg);
   return (
@@ -56,7 +65,7 @@ function AccommodationMini({ accommodation }: { accommodation: Accommodation }) 
         <h4>{accommodation.name}</h4>
         <p className="muted">{accommodation.area}, {accommodation.island}</p>
         <Price isk={accommodation.priceIsk} sourcePriceEur={accommodation.sourcePriceEur} sourceCurrencyNote={accommodation.sourceCurrencyNote} />
-        <a className="button button-small" href={accommodation.bookingLink} target="_blank" rel="noreferrer">Open booking link</a>
+        <BookingButton bookingLink={accommodation.bookingLink} small />
       </div>
     </article>
   );
@@ -64,7 +73,10 @@ function AccommodationMini({ accommodation }: { accommodation: Accommodation }) 
 
 function PackageDetail({ pkg }: { pkg: TripPackage }) {
   const packageAccommodations = pkg.accommodationIds.map((id) => byId.get(id)).filter(Boolean) as Accommodation[];
-  const packageTransfers = (pkg.knownTransferIds ?? []).map((id) => transferById.get(id)).filter(Boolean);
+  const packageTransfers = (pkg.knownTransferIds ?? []).flatMap((id) => {
+    const transfer = transferById.get(id);
+    return transfer ? [transfer] : [];
+  });
 
   return (
     <section className="detail card" id={pkg.id}>
@@ -115,7 +127,7 @@ export default function Home() {
 
       <section className="container">
         <div className="section-heading"><div><p className="eyebrow">Reusable stays</p><h2>Accommodation library</h2></div></div>
-        <div className="accommodation-grid">{accommodations.map((stay) => <article className="card accommodation-card" key={stay.id}><Image className="library-image" src="/images/placeholder-trip.svg" alt="Travel placeholder" width={640} height={360} /><div className="card-body"><p className="eyebrow">{stay.type}</p><h3>{stay.name}</h3><p className="muted">{stay.area}, {stay.island} · {stay.dates}</p><Price isk={stay.priceIsk} sourcePriceEur={stay.sourcePriceEur} sourceCurrencyNote={stay.sourceCurrencyNote} />{stay.sourcePriceEur && <p className="muted">Source price: €{new Intl.NumberFormat("en-US").format(stay.sourcePriceEur)}; ISK price is estimated at {pricingSettings.eurToIskRate} ISK/EUR.</p>}{stay.previousPriceIsk && <p className="muted">Previous price: {formatISK(stay.previousPriceIsk)}{stay.previousSourcePriceEur ? ` / source €${new Intl.NumberFormat("en-US").format(stay.previousSourcePriceEur)}` : ""}</p>}<p><strong>Board:</strong> {stay.board}</p><div className="chips">{stay.facilities.slice(0, 6).map((facility) => <span key={facility}>{facility}</span>)}</div>{stay.notes && <p className="warning small">{stay.notes.join(" ")}</p>}<a className="button" href={stay.bookingLink} target="_blank" rel="noreferrer">Open booking link</a></div></article>)}</div>
+        <div className="accommodation-grid">{accommodations.map((stay) => <article className="card accommodation-card" key={stay.id}><Image className="library-image" src="/images/placeholder-trip.svg" alt="Travel placeholder" width={640} height={360} /><div className="card-body"><p className="eyebrow">{stay.type}</p><h3>{stay.name}</h3><p className="muted">{stay.area}, {stay.island} · {stay.dates}</p><Price isk={stay.priceIsk} sourcePriceEur={stay.sourcePriceEur} sourceCurrencyNote={stay.sourceCurrencyNote} />{stay.sourcePriceEur && <p className="muted">Source price: €{new Intl.NumberFormat("en-US").format(stay.sourcePriceEur)}; ISK price is estimated at {pricingSettings.eurToIskRate} ISK/EUR.</p>}{stay.previousPriceIsk && <p className="muted">Previous price: {formatISK(stay.previousPriceIsk)}{stay.previousSourcePriceEur ? ` / source €${new Intl.NumberFormat("en-US").format(stay.previousSourcePriceEur)}` : ""}</p>}<p><strong>Board:</strong> {stay.board}</p><div className="chips">{stay.facilities.slice(0, 6).map((facility) => <span key={facility}>{facility}</span>)}</div>{stay.notes && <p className="warning small">{stay.notes.join(" ")}</p>}<BookingButton bookingLink={stay.bookingLink} /></div></article>)}</div>
       </section>
     </main>
   );

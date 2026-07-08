@@ -22,6 +22,8 @@ If a booking price is originally listed in EUR, store the manually calculated IS
 
 Package totals are calculated from accommodation IDs, so package cards and the comparison table update automatically.
 
+Some accommodations may not yet have booking links. Keep those accommodations visible, leave `bookingLink` unset, and let the UI show the disabled secondary button text “Booking link coming soon”. Do not hide the accommodation or crash the page while the link is missing.
+
 ## Update the EUR exchange rate
 
 The manually configured exchange rate lives in `src/data/settings.ts`:
@@ -51,6 +53,8 @@ Future accommodation image paths are already stored in `src/data/accommodations.
 - `public/images/accommodations/occidental-jandia-mar-02.jpg`
 - `public/images/accommodations/ona-hollywood-mirage-01.jpg`
 - `public/images/accommodations/ona-hollywood-mirage-02.jpg`
+- `public/images/accommodations/livvo-coloradamar-01.jpg`
+- `public/images/accommodations/livvo-coloradamar-02.jpg`
 
 To switch from placeholders to real images, update the `Image` component usage in `src/app/page.tsx` to use the first path from each accommodation's `images` array after the files exist.
 
