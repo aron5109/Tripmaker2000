@@ -13,12 +13,17 @@ function dateDisplay(accommodation: Accommodation) {
   return typeof accommodation.dates === "string" ? accommodation.dates : accommodation.dates.display;
 }
 
-function imageSrc(accommodation: Accommodation) {
-  return accommodation.images?.[0] ?? "/images/placeholder-trip.svg";
+function getPublicImageSrc(images?: string[]) {
+  const src = images?.find((image) => image.startsWith("/images/") && !image.startsWith("/public/"));
+  return src ?? "/images/placeholder-trip.svg";
 }
 
-function bookingUrl(accommodation: Accommodation) {
-  return accommodation.bookingUrl ?? accommodation.bookingLink;
+function BookingButton({ bookingLink, small = false }: { bookingLink?: string; small?: boolean }) {
+  if (!bookingLink) {
+    return <span className={`button button-secondary${small ? " button-small" : ""}`} aria-disabled="true">Booking link coming soon</span>;
+  }
+
+  return <a className={`button${small ? " button-small" : ""}`} href={bookingLink} target="_blank" rel="noopener noreferrer">View / Book</a>;
 }
 
 export function generateStaticParams() {
@@ -64,7 +69,7 @@ export default async function PackagePage({ params }: { params: Promise<{ slug: 
           <div className="timeline">
             {packageAccommodations.map((stay) => (
               <article className="stay-card" key={stay.id}>
-                <Image className="stay-image" src={imageSrc(stay)} alt={stay.name} width={640} height={360} />
+                <Image className="stay-image" src={getPublicImageSrc(stay.images)} alt={stay.name} width={640} height={360} />
                 <div>
                   <p className="eyebrow">{dateDisplay(stay)}</p>
                   <h3>{stay.name}</h3>
@@ -74,7 +79,7 @@ export default async function PackagePage({ params }: { params: Promise<{ slug: 
                     <strong>{formatISK(stay.priceIsk)}</strong>
                     {stay.sourcePriceEur && <span>source €{new Intl.NumberFormat("en-US").format(stay.sourcePriceEur)}</span>}
                   </div>
-                  {bookingUrl(stay) ? <a className="button button-small" href={bookingUrl(stay)} target="_blank" rel="noopener noreferrer">View / Book</a> : <span className="button button-secondary button-small" aria-disabled="true">Booking link coming soon</span>}
+                  <BookingButton bookingLink={stay.bookingLink} small />
                 </div>
               </article>
             ))}

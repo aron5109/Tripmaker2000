@@ -25,12 +25,12 @@ function Price({ isk, sourcePriceEur, sourceCurrencyNote }: { isk: number; sourc
 }
 
 
-function BookingButton({ bookingUrl, small = false }: { bookingUrl?: string; small?: boolean }) {
-  if (!bookingUrl) {
+function BookingButton({ bookingLink, small = false }: { bookingLink?: string; small?: boolean }) {
+  if (!bookingLink) {
     return <span className={`button button-secondary${small ? " button-small" : ""}`} aria-disabled="true">Booking link coming soon</span>;
   }
 
-  return <a className={`button${small ? " button-small" : ""}`} href={bookingUrl} target="_blank" rel="noopener noreferrer">View / Book</a>;
+  return <a className={`button${small ? " button-small" : ""}`} href={bookingLink} target="_blank" rel="noopener noreferrer">View / Book</a>;
 }
 
 function packageHref(pkg: TripPackage) {
@@ -49,12 +49,9 @@ function nightsDisplay(accommodation: Accommodation) {
   return accommodation.nights ?? (typeof accommodation.dates === "string" ? undefined : accommodation.dates.nights);
 }
 
-function accommodationImageSrc(accommodation: Accommodation) {
-  return accommodation.images?.[0] ?? "/images/placeholder-trip.svg";
-}
-
-function accommodationBookingUrl(accommodation: Accommodation) {
-  return accommodation.bookingUrl ?? accommodation.bookingLink;
+function getPublicImageSrc(images?: string[]) {
+  const src = images?.find((image) => image.startsWith("/images/") && !image.startsWith("/public/"));
+  return src ?? "/images/placeholder-trip.svg";
 }
 
 function PackageCard({ pkg }: { pkg: TripPackage }) {
@@ -84,13 +81,13 @@ function PackageCard({ pkg }: { pkg: TripPackage }) {
 function AccommodationMini({ accommodation }: { accommodation: Accommodation }) {
   return (
     <article className="stay-card">
-      <Image className="stay-image" src={accommodationImageSrc(accommodation)} alt={accommodation.name} width={640} height={360} />
+      <Image className="stay-image" src={getPublicImageSrc(accommodation.images)} alt={accommodation.name} width={640} height={360} />
       <div>
         <p className="eyebrow">{shortDateDisplay(accommodation)}{nightsDisplay(accommodation) ? ` · ${nightsDisplay(accommodation)} nights` : ""}</p>
         <h4>{accommodation.name}</h4>
         <p className="muted">{accommodation.area}, {accommodation.island}</p>
         <Price isk={accommodation.priceIsk} sourcePriceEur={accommodation.sourcePriceEur} sourceCurrencyNote={accommodation.sourceCurrencyNote} />
-        <BookingButton bookingUrl={accommodationBookingUrl(accommodation)} small />
+        <BookingButton bookingLink={accommodation.bookingLink} small />
       </div>
     </article>
   );
@@ -152,7 +149,7 @@ export default function Home() {
 
       <section className="container">
         <div className="section-heading"><div><p className="eyebrow">Reusable stays</p><h2>Accommodation library</h2></div></div>
-        <div className="accommodation-grid">{accommodations.map((stay) => <article className="card accommodation-card" key={stay.id}><Image className="library-image" src={accommodationImageSrc(stay)} alt={stay.name} width={640} height={360} /><div className="card-body"><p className="eyebrow">{stay.type}</p><h3>{stay.name}</h3><p className="muted">{stay.area}, {stay.island} · {dateDisplay(stay)}</p><Price isk={stay.priceIsk} sourcePriceEur={stay.sourcePriceEur} sourceCurrencyNote={stay.sourceCurrencyNote} />{stay.sourcePriceEur && <p className="muted">Source price: €{new Intl.NumberFormat("en-US").format(stay.sourcePriceEur)}; ISK price is estimated at {pricingSettings.eurToIskRate} ISK/EUR.</p>}{stay.previousPriceIsk && <p className="muted">Previous price: {formatISK(stay.previousPriceIsk)}{stay.previousSourcePriceEur ? ` / source €${new Intl.NumberFormat("en-US").format(stay.previousSourcePriceEur)}` : ""}</p>}<p><strong>Board:</strong> {stay.board}</p><div className="chips">{stay.facilities.slice(0, 6).map((facility) => <span key={facility}>{facility}</span>)}</div>{stay.bookingTerms && <ul className="small">{stay.bookingTerms.map((term) => <li key={term}>{term}</li>)}</ul>}{stay.notes && !stay.bookingTerms && <p className="warning small">{stay.notes.join(" ")}</p>}<BookingButton bookingUrl={accommodationBookingUrl(stay)} /></div></article>)}</div>
+        <div className="accommodation-grid">{accommodations.map((stay) => <article className="card accommodation-card" key={stay.id}><Image className="library-image" src={getPublicImageSrc(stay.images)} alt={stay.name} width={640} height={360} /><div className="card-body"><p className="eyebrow">{stay.type}</p><h3>{stay.name}</h3><p className="muted">{stay.area}, {stay.island} · {dateDisplay(stay)}</p><Price isk={stay.priceIsk} sourcePriceEur={stay.sourcePriceEur} sourceCurrencyNote={stay.sourceCurrencyNote} />{stay.sourcePriceEur && <p className="muted">Source price: €{new Intl.NumberFormat("en-US").format(stay.sourcePriceEur)}; ISK price is estimated at {pricingSettings.eurToIskRate} ISK/EUR.</p>}{stay.previousPriceIsk && <p className="muted">Previous price: {formatISK(stay.previousPriceIsk)}{stay.previousSourcePriceEur ? ` / source €${new Intl.NumberFormat("en-US").format(stay.previousSourcePriceEur)}` : ""}</p>}<p><strong>Board:</strong> {stay.board}</p><div className="chips">{stay.facilities.slice(0, 6).map((facility) => <span key={facility}>{facility}</span>)}</div>{stay.bookingTerms && <ul className="small">{stay.bookingTerms.map((term) => <li key={term}>{term}</li>)}</ul>}{stay.notes && !stay.bookingTerms && <p className="warning small">{stay.notes.join(" ")}</p>}<BookingButton bookingLink={stay.bookingLink} /></div></article>)}</div>
       </section>
     </main>
   );
