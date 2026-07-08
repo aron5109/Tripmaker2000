@@ -14,6 +14,7 @@ export type AccommodationGuests = string | {
 };
 
 export type NearbyPlaces = {
+  highlights?: string[];
   restaurants?: string[];
   beaches?: string[];
   airports?: string[];
