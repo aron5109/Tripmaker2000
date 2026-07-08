@@ -12,6 +12,9 @@ export type Accommodation = {
   guests: string;
   priceIsk: number;
   previousPriceIsk?: number;
+  sourcePriceEur?: number;
+  previousSourcePriceEur?: number;
+  sourceCurrencyNote?: string;
   type: string;
   unit?: string;
   board: string;
@@ -39,7 +42,9 @@ export type Transfer = {
 export type TripPackage = {
   id: string;
   name: string;
-  label: "Best Value" | "All Inclusive" | "Family Resort";
+  label: "Best Value" | "All Inclusive" | "Family Resort" | "Tenerife Only";
+  secondaryLabel?: string;
+  badges?: string[];
   fullDates: string;
   accommodationIds: string[];
   islands: string[];
