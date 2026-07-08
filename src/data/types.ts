@@ -20,6 +20,13 @@ export type NearbyPlaces = {
   airports?: string[];
 };
 
+export type AlternativeRate = {
+  label: string;
+  sourcePriceEur: number;
+  priceIsk: number;
+  terms: string[];
+};
+
 export type Accommodation = {
   id: string;
   slug?: string;
@@ -62,6 +69,7 @@ export type Accommodation = {
   overallRating?: number;
   reviewCount?: number;
   familyRating?: string;
+  alternativeRates?: AlternativeRate[];
 };
 
 export type Transfer = {
