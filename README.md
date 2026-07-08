@@ -57,6 +57,8 @@ Future accommodation image paths are already stored in `src/data/accommodations.
 - `public/images/accommodations/livvo-coloradamar-02.jpg`
 - `public/images/accommodations/barcelo-santa-cruz-contemporaneo-01.jpg`
 - `public/images/accommodations/barcelo-santa-cruz-contemporaneo-02.jpg`
+- `public/images/accommodations/hotel-mirador-papagayo-livvo-01.jpg`
+- `public/images/accommodations/hotel-mirador-papagayo-livvo-02.jpg`
 
 The UI reads the first browser path from each accommodation's `images` array and falls back to `/images/placeholder-trip.svg` when an array is empty. Package and booking buttons must never point to image files.
 

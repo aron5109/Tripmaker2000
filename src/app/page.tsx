@@ -112,7 +112,7 @@ function PackageDetail({ pkg }: { pkg: TripPackage }) {
         </div>
         <div className="card-topline"><Badge>{pkg.label}</Badge>{pkg.secondaryLabel && <Badge>{pkg.secondaryLabel}</Badge>}{pkg.ferryNeeded ? <Badge tone="warn">Transfer TBD</Badge> : <Badge>No Ferry</Badge>}</div>
       </div>
-      {pkg.ferryNeeded && <p className="warning">Ferry estimate is included as a known extra, but local transfer costs are still TBD.</p>}
+      {pkg.ferryNeeded && <p className="warning">{pkg.knownTransferIds?.length ? "Ferry estimate is included as a known extra, but local transfer costs are still TBD." : "Inter-island transfer / ferry / flight costs are TBD."}</p>}
       <div className="timeline">
         {packageAccommodations.map((stay) => <AccommodationMini key={stay.id} accommodation={stay} />)}
       </div>
@@ -132,7 +132,7 @@ export default function Home() {
         <div className="hero-content">
           <p className="eyebrow">Family trip planner · Canary Islands</p>
           <h1>Canary Islands Family Trip Packages</h1>
-          <p className="subtitle">Compare Tenerife and Fuerteventura package ideas for {tripSettings.fullTravelPeriod}.</p>
+          <p className="subtitle">Compare Tenerife, Fuerteventura, and Lanzarote package ideas for {tripSettings.fullTravelPeriod}.</p>
           <div className="hero-badges"><Badge>{tripSettings.guests}</Badge><Badge>{tripSettings.rooms}</Badge><Badge>Rate: €1 = ISK {pricingSettings.eurToIskRate}</Badge></div>
         </div>
       </section>
@@ -152,7 +152,7 @@ export default function Home() {
 
       <section className="container">
         <div className="section-heading"><div><p className="eyebrow">Reusable stays</p><h2>Accommodation library</h2></div></div>
-        <div className="accommodation-grid">{accommodations.map((stay) => <article className="card accommodation-card" key={stay.id}><Image className="library-image" src={accommodationImageSrc(stay)} alt={stay.name} width={640} height={360} /><div className="card-body"><p className="eyebrow">{stay.type}</p><h3>{stay.name}</h3><p className="muted">{stay.area}, {stay.island} · {dateDisplay(stay)}</p><Price isk={stay.priceIsk} sourcePriceEur={stay.sourcePriceEur} sourceCurrencyNote={stay.sourceCurrencyNote} />{stay.sourcePriceEur && <p className="muted">Source price: €{new Intl.NumberFormat("en-US").format(stay.sourcePriceEur)}; ISK price is estimated at {pricingSettings.eurToIskRate} ISK/EUR.</p>}{stay.previousPriceIsk && <p className="muted">Previous price: {formatISK(stay.previousPriceIsk)}{stay.previousSourcePriceEur ? ` / source €${new Intl.NumberFormat("en-US").format(stay.previousSourcePriceEur)}` : ""}</p>}<p><strong>Board:</strong> {stay.board}</p><div className="chips">{stay.facilities.slice(0, 6).map((facility) => <span key={facility}>{facility}</span>)}</div>{stay.bookingTerms && <ul className="small">{stay.bookingTerms.map((term) => <li key={term}>{term}</li>)}</ul>}{stay.notes && !stay.bookingTerms && <p className="warning small">{stay.notes.join(" ")}</p>}<BookingButton bookingUrl={accommodationBookingUrl(stay)} /></div></article>)}</div>
+        <div className="accommodation-grid">{accommodations.map((stay) => <article className="card accommodation-card" key={stay.id}><Image className="library-image" src={accommodationImageSrc(stay)} alt={stay.name} width={640} height={360} /><div className="card-body"><p className="eyebrow">{stay.type}</p><h3>{stay.name}</h3><p className="muted">{stay.area}, {stay.island} · {dateDisplay(stay)}</p><Price isk={stay.priceIsk} sourcePriceEur={stay.sourcePriceEur} sourceCurrencyNote={stay.sourceCurrencyNote} />{stay.sourcePriceEur && <p className="muted">Source price: €{new Intl.NumberFormat("en-US").format(stay.sourcePriceEur)}; ISK price is estimated at {pricingSettings.eurToIskRate} ISK/EUR.</p>}{stay.previousPriceIsk && <p className="muted">Previous price: {formatISK(stay.previousPriceIsk)}{stay.previousSourcePriceEur ? ` / source €${new Intl.NumberFormat("en-US").format(stay.previousSourcePriceEur)}` : ""}</p>}<p><strong>Board:</strong> {stay.board}</p><div className="chips">{stay.facilities.slice(0, 6).map((facility) => <span key={facility}>{facility}</span>)}</div>{stay.ratings && <p className="small"><strong>Ratings:</strong> {Object.entries(stay.ratings).map(([label, rating]) => `${label} ${rating}`).join(" · ")}</p>}{stay.bookingTerms && <ul className="small">{stay.bookingTerms.map((term) => <li key={term}>{term}</li>)}</ul>}{stay.notes && <p className="warning small">{stay.notes.join(" ")}</p>}<BookingButton bookingUrl={accommodationBookingUrl(stay)} /></div></article>)}</div>
       </section>
     </main>
   );
