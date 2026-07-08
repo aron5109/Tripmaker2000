@@ -13,6 +13,12 @@ export type AccommodationGuests = string | {
   childAge?: number;
 };
 
+export type NearbyPlaces = {
+  restaurants?: string[];
+  beaches?: string[];
+  airports?: string[];
+};
+
 export type Accommodation = {
   id: string;
   slug?: string;
@@ -51,6 +57,7 @@ export type Accommodation = {
   availabilityNote?: string;
   bedOptions?: string[];
   locationNotes?: string[];
+  nearby?: NearbyPlaces;
   overallRating?: number;
   reviewCount?: number;
   familyRating?: string;
