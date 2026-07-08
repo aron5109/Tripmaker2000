@@ -1,1 +1,80 @@
 # Tripmaker2000
+
+A simple, editable Next.js trip package selection site for Canary Islands family trips.
+
+## What is included
+
+- Package overview cards for Tenerife-only and Tenerife/Fuerteventura options.
+- Package detail sections with timelines, known costs, missing costs, and booking buttons.
+- Comparison table with ISK source prices and approximate EUR estimates.
+- Accommodation library built from local TypeScript data files.
+- Mobile-first styling suitable for Vercel deployment.
+
+## Edit prices and accommodation details
+
+Accommodation prices live in `src/data/accommodations.ts`.
+
+1. Find the accommodation by `id`.
+2. Update `priceIsk` and, if useful, `previousPriceIsk`.
+3. Keep ISK as the source-of-truth currency.
+
+Package totals are calculated from accommodation IDs, so package cards and the comparison table update automatically.
+
+## Update the EUR exchange rate
+
+The manually configured exchange rate lives in `src/data/settings.ts`:
+
+```ts
+export const pricingSettings = {
+  eurToIskRate: 145,
+  currencyNote: "EUR prices are estimates based on a manually configured exchange rate.",
+};
+```
+
+Change `eurToIskRate` when you want to refresh EUR estimates. EUR display is approximate and calculated as `ISK / eurToIskRate`.
+
+## Add images
+
+The site currently uses `/public/images/placeholder-trip.svg` so the build does not fail while JPGs are missing.
+
+Future accommodation image paths are already stored in `src/data/accommodations.ts`. Add real JPG files here when available:
+
+- `public/images/accommodations/hovima-atlantis-01.jpg`
+- `public/images/accommodations/hovima-atlantis-02.jpg`
+- `public/images/accommodations/home2book-bereber-santa-cruz-01.jpg`
+- `public/images/accommodations/home2book-bereber-santa-cruz-02.jpg`
+- `public/images/accommodations/hotel-arena-beach-01.jpg`
+- `public/images/accommodations/hotel-arena-beach-02.jpg`
+- `public/images/accommodations/occidental-jandia-mar-01.jpg`
+- `public/images/accommodations/occidental-jandia-mar-02.jpg`
+
+To switch from placeholders to real images, update the `Image` component usage in `src/app/page.tsx` to use the first path from each accommodation's `images` array after the files exist.
+
+## Add a new trip package
+
+1. Add any new stay to `src/data/accommodations.ts`.
+2. Add any transfer estimate to `src/data/transfers.ts` if needed.
+3. Add a new object to `tripPackages` in `src/data/packages.ts`.
+4. Reference accommodation IDs in `accommodationIds`.
+5. Reference transfer IDs in `knownTransferIds` if the package has known transfer estimates.
+6. Add missing or unknown costs in `missingCosts` so they remain visible.
+
+## Deploy on Vercel
+
+1. Push the repo to GitHub.
+2. Import the repository in Vercel.
+3. Use the default Next.js settings.
+4. Vercel will run `npm install` and `npm run build`.
+
+## Local development
+
+```bash
+npm install
+npm run dev
+```
+
+Build check:
+
+```bash
+npm run build
+```
